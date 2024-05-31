@@ -24,12 +24,25 @@
     },
     submit_form(e){
       e.preventDefault();
-      this.off_modal_flag();
-      this.selected_form_data.export_name = this.$refs.export_name.value;
-      this.selected_form_data.volume_name = this.$refs.volume_name.value;
-      this.selected_form_data.protocol = this.$refs.protocol.value;
-      console.log(this.selected_form_data);
-    }
+      
+      if(!this.$refs.export_name.value.trim()){
+        this.$refs.export_name.style.border = "1px solid red";
+        console.log(this.selected_form_data);
+      }
+      else{
+        this.$refs.export_name.style.border = "1px solid #e5e7eb";
+        this.selected_form_data.export_name = this.$refs.export_name.value;
+        this.selected_form_data.volume_name = this.$refs.volume_name.value;
+        this.selected_form_data.protocol = this.$refs.protocol.value;
+        console.log(this.selected_form_data);
+        this.off_modal_flag();
+      }
+    },
+    text_field_oninput(){
+      console.log("oninput");
+      this.$refs.export_name.style.border = "1px solid #e5e7eb";
+
+    },
   },
   components:{
 
@@ -50,7 +63,7 @@
       <form class="modal_form" @submit="submit_form">
           <div class="modal_form-elem export-name">
               <label>Export name</label>
-              <input ref="export_name" placeholder="my_vol2" type="text" />
+              <input @input="text_field_oninput" ref="export_name" placeholder="my_vol2" type="text" />
           </div>
           <div class="modal_form-elem volume-name">
               <label>Volume name</label>
@@ -65,7 +78,7 @@
               </select>
           </div>
           <div class="modal_form-sumbit">
-              <button>Cancel</button>
+              <button @click="off_modal_flag">Cancel</button>
               <input type="submit" value="Create"/>
           </div>
       </form>
@@ -105,9 +118,6 @@
   .modal_show:hover{
     opacity: 0.5;
     transition: 0.5s;
-  }
-  .modal_external_wrapper{
-
   }
   .modal_window{
         background-color: white;
